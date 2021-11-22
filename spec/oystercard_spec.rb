@@ -19,5 +19,10 @@ describe Oystercard do
 		card.top_up(20)
 		expect(card.balance).to eq 20
 	end
-
+    
+	it 'raises error if top_up exceeds maximum amount of 90' do
+      card = Oystercard.new
+	  card.top_up(90)
+	  expect { card.top_up(1) }.to raise_error "Can't add more balance: maximum amount surpassed"
+    end
 end
