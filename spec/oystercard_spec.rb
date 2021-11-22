@@ -21,8 +21,21 @@ describe Oystercard do
 	end
     
 	it 'raises error if top_up exceeds maximum amount of 90' do
-      card = Oystercard.new
+    card = Oystercard.new
 	  card.top_up(90)
 	  expect { card.top_up(1) }.to raise_error "Can't add more balance: maximum amount surpassed"
     end
+
+	context "#deduct method"
+		it 'has a #deduct method with 1 argument' do
+			expect(subject).to respond_to(:deduct).with(1).argument
+		end
+
+		it 'deducts the amount given from @balance' do
+			card = Oystercard.new
+			card.top_up(20)
+			first_balance = card.balance
+			card.deduct(10)
+			expect(card.balance).to eq (first_balance - 10)
+		end
 end
