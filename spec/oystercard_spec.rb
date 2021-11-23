@@ -2,6 +2,7 @@ require 'oystercard'
 
 describe Oystercard do
 	let(:card) {Oystercard.new}
+	let(:station) { double :station }
 	it 'creates an instance of itself' do
 		expect(Oystercard).to respond_to(:new)
 	end
@@ -32,23 +33,23 @@ describe Oystercard do
 	# 		expect(subject).to respond_to(:deduct).with(1).argument
 	# 	end
 
-		it 'deducts the amount given from @balance' do
-			# card = Oystercard.new
-			card.top_up(20)
-			first_balance = card.balance
-			card.deduct(10)
-			expect(card.balance).to eq (first_balance - 10)
-		end
+		# it 'deducts the amount given from @balance' do
+		# 	# card = Oystercard.new
+		# 	card.top_up(20)
+		# 	first_balance = card.balance
+		# 	card.deduct(10)
+		# 	expect(card.balance).to eq (first_balance - 10)
+		# end
 
 	context "state (status) of the card"
 	    it 'respond to touch_in' do
-			expect(subject).to respond_to(:touch_in)
+			expect(subject).to respond_to(:touch_in).with(1).argument
 		end
 
 	    it 'let us know the state of the card' do
 		  #  card = Oystercard.new
 		   card.top_up(20)
-		   card.touch_in
+		   card.touch_in(station)
 		   expect(card.status).to eq true
 	    end
 
@@ -59,7 +60,7 @@ describe Oystercard do
 		it 'let us know the state of the card' do
 			# card = Oystercard.new
 			card.top_up(20)
-			card.touch_in
+			card.touch_in(station)
 			card.touch_out
 			expect(card.status).to eq false
 		 end
@@ -71,21 +72,38 @@ describe Oystercard do
 		it 'confirms that status is true after touch_in' do
 			# card = Oystercard.new  
 			card.top_up(5)
-			card.touch_in
+			card.touch_in(station)
 		    expect(card.in_journey?).to be_truthy
 		end
 
 	context 'minimum balance' 
         it 'raises an error if touch_in with balance less than 1' do
 			# card = Oystercard.new
-			expect { card.touch_in }.to raise_error("Not enough funds: please top up")
+			expect { card.touch_in(station) }.to raise_error("Not enough funds: please top up")
 		end
 
 	context 'touch out balance'
 		it 'deducts single ride fare from balance when touch_out' do
-			card = Oystercard.new
+			# card = Oystercard.new
 			card.top_up(20)
-			card.touch_in
+			card.touch_in(station)
 			expect { card.touch_out }.to change{ card.balance} .by(-Oystercard::SINGLE_RIDE)
 		end
+
+	context "Entry station"
+		it 'remembers the entry station when touch_in(station)' do
+			card.top_up(20)
+			card.touch_in(station)
+			expect(card.entry_station).to eq station
+		end
+
+		context "Card forgets station on touch_out"
+		it 'forgets the entry station when touch_out' do
+			card.top_up(20)
+			card.touch_in(station)
+			card.touch_out
+			expect(card.entry_station).to eq nil
+		end
+	
+
 end
