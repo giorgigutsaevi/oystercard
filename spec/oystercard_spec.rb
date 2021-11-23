@@ -26,18 +26,18 @@ describe Oystercard do
 	  expect { card.top_up(1) }.to raise_error "Can't add more balance: maximum amount surpassed"
     end
 
-	context "#deduct method"
-		it 'has a #deduct method with 1 argument' do
-			expect(subject).to respond_to(:deduct).with(1).argument
-		end
+	# context "#deduct method"
+	# 	it 'has a #deduct method with 1 argument' do
+	# 		expect(subject).to respond_to(:deduct).with(1).argument
+	# 	end
 
-		it 'deducts the amount given from @balance' do
-			card = Oystercard.new
-			card.top_up(20)
-			first_balance = card.balance
-			card.deduct(10)
-			expect(card.balance).to eq (first_balance - 10)
-		end
+	# 	it 'deducts the amount given from @balance' do
+	# 		card = Oystercard.new
+	# 		card.top_up(20)
+	# 		first_balance = card.balance
+	# 		card.deduct(10)
+	# 		expect(card.balance).to eq (first_balance - 10)
+	# 	end
 
 	context "state (status) of the card"
 	    it 'respond to touch_in' do
@@ -75,8 +75,16 @@ describe Oystercard do
 		end
 
 	context 'minimum balance' 
-        it 'raises an error if touch_in with balance less than 1' do
+    it 'raises an error if touch_in with balance less than 1' do
 			card = Oystercard.new
 			expect { card.touch_in }.to raise_error("Not enough funds: please top up")
+		end
+
+	context 'touch out balance'
+		it 'deducts single ride fare from balance when touch_out' do
+			card = Oystercard.new
+			card.top_up(20)
+			card.touch_in
+			expect { card.touch_out }.to change{ card.balance} .by(-Oystercard::SINGLE_RIDE)
 		end
 end

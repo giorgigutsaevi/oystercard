@@ -3,7 +3,8 @@ class Oystercard
     
 	MAXIMUM_AMOUNT = 90
 	MINIMUM_TRAVEL_AMOUNT = 1
-	
+	SINGLE_RIDE = 2
+
 	def initialize
 		@balance = 0
 	    @status = false
@@ -15,20 +16,23 @@ class Oystercard
 		@balance
 	end
 
-	def deduct(amount)
-		@balance -= amount
-	end
-
 	def touch_in
 		fail "Not enough funds: please top up" if @balance < MINIMUM_TRAVEL_AMOUNT
 		@status = true
 	end
 
 	def touch_out
+		deduct(SINGLE_RIDE)
 		@status = false
 	end
 
 	def in_journey?
 		@status
+	end
+
+	private
+
+	def deduct(amount)
+		@balance -= amount
 	end
 end
