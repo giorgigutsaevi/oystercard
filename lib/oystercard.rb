@@ -1,5 +1,5 @@
 class Oystercard
-	attr_reader :balance, :status, :entry_station
+	attr_reader :balance, :status, :entry_station, :exit_station, :travel_history
     
 	MAXIMUM_AMOUNT = 90
 	MINIMUM_TRAVEL_AMOUNT = 1
@@ -8,6 +8,7 @@ class Oystercard
 	def initialize
 		@balance = 0
 	  @status = false
+		@travel_history = []
 	end
 
 	def top_up(amount)
@@ -22,7 +23,9 @@ class Oystercard
 		@entry_station = station
 	end
 
-	def touch_out
+	def touch_out(exit_station)
+		@exit_station = exit_station
+		@travel_history << {in: @entry_station, out: @exit_station}
 		deduct(SINGLE_RIDE)
 		@status = false
 		@entry_station = nil

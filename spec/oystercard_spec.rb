@@ -3,6 +3,8 @@ require 'oystercard'
 describe Oystercard do
 	let(:card) {Oystercard.new}
 	let(:station) { double :station }
+	let(:exit_station) {double :station }
+
 	it 'creates an instance of itself' do
 		expect(Oystercard).to respond_to(:new)
 	end
@@ -54,14 +56,14 @@ describe Oystercard do
 	    end
 
 		it 'respond to touch_out' do
-			expect(subject).to respond_to(:touch_out)
+			expect(subject).to respond_to(:touch_out).with(1).argument
 		end
 
 		it 'let us know the state of the card' do
 			# card = Oystercard.new
 			card.top_up(20)
 			card.touch_in(station)
-			card.touch_out
+			card.touch_out(exit_station)
 			expect(card.status).to eq false
 		 end
 
@@ -87,7 +89,7 @@ describe Oystercard do
 			# card = Oystercard.new
 			card.top_up(20)
 			card.touch_in(station)
-			expect { card.touch_out }.to change{ card.balance} .by(-Oystercard::SINGLE_RIDE)
+			expect { card.touch_out(exit_station) }.to change{ card.balance} .by(-Oystercard::SINGLE_RIDE)
 		end
 
 	context "Entry station"
@@ -101,8 +103,28 @@ describe Oystercard do
 		it 'forgets the entry station when touch_out' do
 			card.top_up(20)
 			card.touch_in(station)
-			card.touch_out
+			card.touch_out(exit_station)
 			expect(card.entry_station).to eq nil
+		end
+
+		context "travel history"
+		it 'stores entry and exit stations of each travel' do
+			card.top_up(20)
+			card.touch_in(station)
+			card.touch_out(exit_station)
+			expect(card.exit_station).to eq exit_station
+		end
+
+		it 'checks that the card has an empty list of journey by default' do
+			card.top_up(20)
+			expect(card.travel_history).to match_array([])
+		end
+
+		it 'checks that touching in/out creates 1 journey' do
+			card.top_up(20)
+			card.touch_in(station)
+			card.touch_out(exit_station)
+			expect(card.travel_history.size).to eq 1
 		end
 	
 
