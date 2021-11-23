@@ -38,6 +38,7 @@ describe Oystercard do
 			card.deduct(10)
 			expect(card.balance).to eq (first_balance - 10)
 		end
+
 	context "state (status) of the card"
 	    it 'respond to touch_in' do
 			expect(subject).to respond_to(:touch_in)
@@ -68,7 +69,14 @@ describe Oystercard do
 
 		it 'confirms that status is true after touch_in' do
 			card = Oystercard.new
+			card.top_up(5)
 			card.touch_in
 		    expect(card.in_journey?).to be_truthy
+		end
+
+	context 'minimum balance' 
+        it 'raises an error if touch_in with balance less than 1' do
+			card = Oystercard.new
+			expect { card.touch_in }.to raise_error("Not enough funds: please top up")
 		end
 end
