@@ -1,12 +1,13 @@
 require 'oystercard'
 
 describe Oystercard do
+	let(:card) {Oystercard.new}
 	it 'creates an instance of itself' do
 		expect(Oystercard).to respond_to(:new)
 	end
 
 	it 'The default card balance is 0' do
-		card = Oystercard.new
+		# card = Oystercard.new
 		expect(card.balance).to eq 0
 	end
 
@@ -15,13 +16,13 @@ describe Oystercard do
 	end
 
 	it 'adds the amount to the balance of the card' do
-		card = Oystercard.new
+		# card = Oystercard.new
 		card.top_up(20)
 		expect(card.balance).to eq 20
 	end
     
 	it 'raises error if top_up exceeds maximum amount of 90' do
-    card = Oystercard.new
+    # card = Oystercard.new
 	  card.top_up(90)
 	  expect { card.top_up(1) }.to raise_error "Can't add more balance: maximum amount surpassed"
     end
@@ -31,6 +32,7 @@ describe Oystercard do
 	# 		expect(subject).to respond_to(:deduct).with(1).argument
 	# 	end
 
+<<<<<<< HEAD
 	# 	it 'deducts the amount given from @balance' do
 	# 		card = Oystercard.new
 	# 		card.top_up(20)
@@ -38,6 +40,15 @@ describe Oystercard do
 	# 		card.deduct(10)
 	# 		expect(card.balance).to eq (first_balance - 10)
 	# 	end
+=======
+		it 'deducts the amount given from @balance' do
+			# card = Oystercard.new
+			card.top_up(20)
+			first_balance = card.balance
+			card.deduct(10)
+			expect(card.balance).to eq (first_balance - 10)
+		end
+>>>>>>> b28b0c8 (Refactor: DRY code)
 
 	context "state (status) of the card"
 	    it 'respond to touch_in' do
@@ -45,7 +56,7 @@ describe Oystercard do
 		end
 
 	    it 'let us know the state of the card' do
-		   card = Oystercard.new
+		  #  card = Oystercard.new
 		   card.top_up(20)
 		   card.touch_in
 		   expect(card.status).to eq true
@@ -56,7 +67,7 @@ describe Oystercard do
 		end
 
 		it 'let us know the state of the card' do
-			card = Oystercard.new
+			# card = Oystercard.new
 			card.top_up(20)
 			card.touch_in
 			card.touch_out
@@ -68,15 +79,20 @@ describe Oystercard do
 		end
 
 		it 'confirms that status is true after touch_in' do
-			card = Oystercard.new
+			# card = Oystercard.new  
 			card.top_up(5)
 			card.touch_in
 		    expect(card.in_journey?).to be_truthy
 		end
 
 	context 'minimum balance' 
+<<<<<<< HEAD
     it 'raises an error if touch_in with balance less than 1' do
 			card = Oystercard.new
+=======
+        it 'raises an error if touch_in with balance less than 1' do
+			# card = Oystercard.new
+>>>>>>> b28b0c8 (Refactor: DRY code)
 			expect { card.touch_in }.to raise_error("Not enough funds: please top up")
 		end
 
