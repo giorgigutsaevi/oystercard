@@ -32,15 +32,6 @@ describe Oystercard do
 	# 		expect(subject).to respond_to(:deduct).with(1).argument
 	# 	end
 
-<<<<<<< HEAD
-	# 	it 'deducts the amount given from @balance' do
-	# 		card = Oystercard.new
-	# 		card.top_up(20)
-	# 		first_balance = card.balance
-	# 		card.deduct(10)
-	# 		expect(card.balance).to eq (first_balance - 10)
-	# 	end
-=======
 		it 'deducts the amount given from @balance' do
 			# card = Oystercard.new
 			card.top_up(20)
@@ -48,7 +39,6 @@ describe Oystercard do
 			card.deduct(10)
 			expect(card.balance).to eq (first_balance - 10)
 		end
->>>>>>> b28b0c8 (Refactor: DRY code)
 
 	context "state (status) of the card"
 	    it 'respond to touch_in' do
@@ -86,13 +76,8 @@ describe Oystercard do
 		end
 
 	context 'minimum balance' 
-<<<<<<< HEAD
-    it 'raises an error if touch_in with balance less than 1' do
-			card = Oystercard.new
-=======
         it 'raises an error if touch_in with balance less than 1' do
 			# card = Oystercard.new
->>>>>>> b28b0c8 (Refactor: DRY code)
 			expect { card.touch_in }.to raise_error("Not enough funds: please top up")
 		end
 
