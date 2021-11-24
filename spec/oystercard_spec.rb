@@ -52,7 +52,7 @@ describe Oystercard do
 		  #  card = Oystercard.new
 		   card.top_up(20)
 		   card.touch_in(station)
-		   expect(card.status).to eq true
+		   expect(card.in_journey).to eq true
 	    end
 
 		it 'respond to touch_out' do
@@ -64,7 +64,7 @@ describe Oystercard do
 			card.top_up(20)
 			card.touch_in(station)
 			card.touch_out(exit_station)
-			expect(card.status).to eq false
+			expect(card.in_journey).to eq false
 		 end
 
 		it 'respond to in_journey?' do
