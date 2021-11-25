@@ -14,22 +14,38 @@ describe Journey do
 		expect(subject).to respond_to(:start)
 	end
 
-	it '#start method returns a entry_station' do
-		expect(subject.start("Hackney Central")).to eq subject.entry_station
+	it 'has an entry station' do
+		expect(subject.entry_station).to eq subject.entry_station
 	end
+
+	it 'has a penalty fare by default' do
+    expect(subject.fare).to eq Journey::PENALTY_FARE
+  end
 
 	context "#finish" 
 	it "has a #finish method" do
 		expect(subject).to respond_to(:finish)
 	end
 
-	it '#finish method returns an exit_station' do
-		expect(subject.finish("Kentish Town")).to eq subject.exit_station
+	it 'has an exit station' do
+		expect(subject.exit_station).to eq subject.exit_station
 	end
 
 	context "#complete?"
 	it "has a #complete? method" do
 		expect(subject).to respond_to(:complete?)
+	end
+
+	it "knows a journey is complete" do
+		subject.entry_station = "Wembley Park"
+		subject.exit_station = 'Angel'
+		expect(subject.complete?).to eq true
+	end
+
+	it "knows a journey is NOT complete" do
+		subject.entry_station = "Bow"
+		subject.exit_station = nil
+		expect(subject.complete?).to eq false
 	end
 	
 	context "#fare"
@@ -38,16 +54,14 @@ describe Journey do
 	end
 
 	it 'returns MINIMUM_FARE (1) if the journey is complete' do
-		subject.start("Angel")
-		subject.finish("Liverpool St.")
+		subject.start("Angel", 1)
+		subject.finish("Liverpool St.", 1)
 		expect(subject.fare).to eq 1
 	end
 
 	it 'returns PENALTY_FARE (6) if the journey is NOT complete' do
-		subject.start("Angel")
+		subject.start("Angel", 1)
 		expect(subject.fare).to eq 6
 	end
-	
-
 
 end
