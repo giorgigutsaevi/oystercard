@@ -7,7 +7,7 @@ describe JourneyLog do
 	let(:entry_station) {"Angel"}
 	let(:another_entry_station) {"King's Cross"}
 	let(:exit_station) {"Euston"}
-		
+
 	it "takes 1 parameter at initialization" do
 		expect(JourneyLog).to respond_to(:new).with(1).argument
 	end
@@ -17,11 +17,11 @@ describe JourneyLog do
 			expect(subject).to respond_to(:start_journey)
 		end
 
-		context "Raise Error"
-			it "raises an error if the user starts another journey while still in 1st journey" do	
-				subject.start_journey(:entry_station, 1)
-				expect {subject.start_journey(:another_entry_station, 1)}.to raise_error "Can't start another journey while in-journey"
-			end
+		# context "Raise Error"
+		# 	it "raises an error if the user starts another journey while still in 1st journey" do	
+		# 		subject.start_journey(:entry_station, 1)
+		# 		expect {subject.start_journey(:another_entry_station, 1)}.to raise_error "Can't start another journey while in-journey"
+		# 	end
  
 		it "#start_journey creates a current_journey instance variable" do
 			subject.start_journey(:entry_station, 1)

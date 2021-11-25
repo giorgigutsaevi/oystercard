@@ -19,7 +19,7 @@ describe Journey do
 	end
 
 	it 'has a penalty fare by default' do
-    expect(subject.fare).to eq Journey::PENALTY_FARE
+    expect(subject.calculate_fare).to eq Journey::PENALTY_FARE
   end
 
 	context "#finish" 
@@ -50,18 +50,18 @@ describe Journey do
 	
 	context "#fare"
 	it 'has a #fare method' do
-		expect(subject).to respond_to(:fare)
+		expect(subject).to respond_to(:calculate_fare)
 	end
 
 	it 'returns MINIMUM_FARE (1) if the journey is complete' do
 		subject.start("Angel", 1)
 		subject.finish("Liverpool St.", 1)
-		expect(subject.fare).to eq 1
+		expect(subject.calculate_fare).to eq 1
 	end
 
 	it 'returns PENALTY_FARE (6) if the journey is NOT complete' do
 		subject.start("Angel", 1)
-		expect(subject.fare).to eq 6
+		expect(subject.calculate_fare).to eq 6
 	end
 
 end

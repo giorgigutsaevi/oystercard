@@ -48,11 +48,12 @@ describe Oystercard do
 				expect(subject).to respond_to(:touch_out).with(2).argument
 			end
 
-			context "Checking #touch_out deducts the SINGLE_RIDE amount"
-				it "#touch_out reduces the balance by SINGLE_RIDE" do
-					card.top_up(30)
+			context "#touch_out amount deduction"
+				it "#touch_out reduces the balance by a correct amount" do
+					card.top_up(20)
 					card.touch_in(:station, 1)
-					expect { card.touch_out(:another_station, 1) }.to change{card.balance}.by(-Oystercard::SINGLE_RIDE)
+					card.touch_out(:another_station, 3)
+					expect(card.balance).to eq 17
 				end
 
 			context "#touch_out functionality"

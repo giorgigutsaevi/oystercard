@@ -3,6 +3,7 @@ require_relative 'station'
 class Journey
 	PENALTY_FARE = 6
 	MINIMUM_FARE = 1
+	ZONE_CROSSING_FARE = 1
 
 	attr_accessor :entry_station
 	attr_accessor :exit_station
@@ -12,6 +13,8 @@ class Journey
 	def initialize
 		@entry_station
 		@exit_station 
+		@entry_zone
+		@exit_zone
 	end
 
 	def start(station, entry_zone)
@@ -32,7 +35,13 @@ class Journey
 		@entry_station != nil && @exit_station != nil ? true : false
 	end
 
-	def fare 
-		self.complete? ? MINIMUM_FARE : PENALTY_FARE
+	def calculate_fare
+		if complete?
+			zones_crossed = (entry_zone - exit_zone).abs
+			MINIMUM_FARE + (ZONE_CROSSING_FARE * zones_crossed)
+		else
+			PENALTY_FARE
+		end
 	end
+
 end

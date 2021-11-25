@@ -11,8 +11,7 @@ class JourneyLog
 	end
 
 	def start_journey(entry_station, entry_zone)
-		raise "Can't start another journey while in-journey" if @current_journey != nil
-		create_journey(entry_station, entry_zone) if @current_journey == nil 
+		create_journey(entry_station, entry_zone) 
 	end
 
 	def finish_journey(exit_station, zone)
@@ -27,6 +26,7 @@ class JourneyLog
 	end
 
 	private 
+	
 	def create_journey(entry_station, entry_zone)
 		@current_journey = Journey.new
 		@current_journey.start(entry_station, entry_zone)
