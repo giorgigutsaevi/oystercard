@@ -4,6 +4,7 @@ require_relative "journeylog"
 class Oystercard
   attr_reader :balance
   attr_reader :journeylog
+	attr_accessor :journey
 
   MAXIMUM_AMOUNT = 90
   MINIMUM_TRAVEL_AMOUNT = 1
@@ -29,7 +30,7 @@ class Oystercard
 
   def touch_out(exit_station, zone)
     @journeylog.finish_journey(exit_station, zone)
-		deduct(@journeylog.current_journey.calculate_fare)
+		deduct(@journeylog.journeys[-1].calculate_fare)
   end
 
   private

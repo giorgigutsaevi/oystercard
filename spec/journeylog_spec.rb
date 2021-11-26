@@ -16,16 +16,10 @@ describe JourneyLog do
 		it "has a #start_journey method" do
 			expect(subject).to respond_to(:start_journey)
 		end
-
-		# context "Raise Error"
-		# 	it "raises an error if the user starts another journey while still in 1st journey" do	
-		# 		subject.start_journey(:entry_station, 1)
-		# 		expect {subject.start_journey(:another_entry_station, 1)}.to raise_error "Can't start another journey while in-journey"
-		# 	end
- 
-		it "#start_journey creates a current_journey instance variable" do
-			subject.start_journey(:entry_station, 1)
-			expect(subject.current_journey).to eq subject.current_journey
+		
+		it "it assigns current_journey variable to entry_station & entry_zone" do
+			subject.start_journey(entry_station, 1)
+			expect(subject.current_journey).not_to eq(nil)
 		end
 	end
 
@@ -34,15 +28,32 @@ describe JourneyLog do
 			expect(subject).to respond_to(:finish_journey)
 		end
 
-		it "pushes the finished journey in an empty journeys array" do
-			subject.start_journey(:entry_station, 1)
-			expect(subject.finish_journey(:exit_station, 3)).to eq(subject.journey_history)
+		it "pushes the finished journey in a journeys array" do
+			subject.start_journey(entry_station, 1)
+			subject.finish_journey(exit_station, 3)
+			expect(subject.journeys.size).to eq 1
+		end
+
+		it "makes current_journey nil after finishing journey" do
+			subject.start_journey(entry_station, 1)
+			subject.finish_journey(exit_station, 4)
+			expect(subject.current_journey).to eq nil
 		end
 	end
 
-	context "Showing journey history"
-	it "has a #show_history method" do
-		expect(subject).to respond_to(:show_history)
+	describe "#show_history" do
+		context "Showing journey history"
+			it "has a #show_history method" do
+				expect(subject).to respond_to(:show_history)
+			end
+
+		context "displaying history"
+			it "prints a journey history" do
+				subject.start_journey(entry_station, 1)
+				subject.finish_journey(exit_station, 3)
+				message = "In: #{entry_station} Station - Zone: #{1}.\nOut: #{exit_station} Station - Zone: #{3}."
+				expect {subject.show_history}.to output(message).to_stdout
+			end
 	end
 
 end
